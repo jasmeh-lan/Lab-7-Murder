@@ -110,14 +110,34 @@ Report_2 <- get_fit_now_check_in |>
   filter(check_in_date == 20180109) |>
   left_join(get_fit_now_member, by = c("membership_id" = "id"))
 
+Report_2
 ```
 
 ```{r}
 #| label: Morty-Report-Check
 
+Report_1 <- get_fit_now_member |>
+  filter(membership_status == "gold" & str_detect(id, "48Z")) |>
+  select(person_id, name) |>
+  left_join(person, by = c("person_id" = "id")) |> # I need to find the license ID of the person before joining with driver license data
+  select(name.x, license_id) |>
+  left_join(drivers_license, by = c("license_id" = "id")) |>
+  filter(str_detect(plate_number, "H42W")) |>
+  inner_join(Report_2, by = c("name.x" = "name")) |> #Joining the information from report 2 to report 1 to see if that is truely the person
+  select(name.x, person_id)
 
-
+Report_1
 ```
+
+```{r}
+#| label: Are-They-The-Murderer
+
+Murder_Check <- interview |>
+  right_join(Report_1, by = "person_id") |>
+  select(transcript)
+Murder_Check # They were a hitman but not the true culprit
+```
+
 
 
 
