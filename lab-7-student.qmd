@@ -1,5 +1,6 @@
 ---
 author: "Jasmine Lantaca"
+format: gfm
 ---
 
 For this lab, you will be joining and filtering related data sets to solve a murder mystery!
