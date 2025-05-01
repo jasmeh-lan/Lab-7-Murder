@@ -68,11 +68,56 @@ Detective Wickham reaches out to you...
 **Step 1: Find the police report in `crime_scene_report`. Then used the information in the report to move on to the next data source based on the information learned.**
 
 ```{r}
+#| label: Crime-Scene-Report-Info
 # Code for looking at the relevant crime scene report.
 
+crime_scene_report |>
+  filter(date == 20180115 & type == "murder" & city == "SQL City") |>
+  select(description) # trying to just get the description of the witnesses
 
 ```
 
+
+```{r}
+#| label: Finding-Witness-Annabel
+
+Annabel <- person |>
+  filter(address_street_name == "Franklin Ave" & str_detect(name, "Annabel")) |> # Had to use ChatGPT to figure out how to get the code that lets me contain strings or numbers 
+  left_join(interview, by = c("id" = "person_id")) |>
+  select(transcript)
+
+Annabel
+```
+
+```{r}
+#| label: Northwestern_Dr Witness
+
+Witness_1 <- person |> 
+  filter(address_street_name == "Northwestern Dr") |>
+  arrange(desc(address_number)) |>
+  slice(1) |> # found Mr. Morty Schapiro
+  left_join(interview, by = c("id" = "person_id")) |>
+  select(transcript)
+
+Witness_1
+
+```
+
+```{r}
+#| label: Annabell-Report-Check
+
+Report_2 <- get_fit_now_check_in |>
+  filter(check_in_date == 20180109) |>
+  left_join(get_fit_now_member, by = c("membership_id" = "id"))
+
+```
+
+```{r}
+#| label: Morty-Report-Check
+
+
+
+```
 
 
 
