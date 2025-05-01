@@ -138,6 +138,20 @@ Murder_Check <- interview |>
 Murder_Check # They were a hitman but not the true culprit
 ```
 
+```{r}
+#| label: Finding-Woman
+
+Woman <- drivers_license |>
+  filter(hair_color == "red" & car_make == "Tesla" & car_model == "Model S") |>
+  filter(!height == 69) |> # removing the person who was too tall in the group of people
+  left_join(person, by = c("id" = "license_id")) |>
+  select(id, id.y, name) |>
+  left_join(interview, by = c("id.y" = "person_id")) |> # No interviews from each suspect
+  left_join(facebook_event_checkin, by = c("id.y" = "person_id")) ## found the suspect (Only one person of the three went to the concert three times)
+
+Woman
+```
+
 
 
 
@@ -160,5 +174,5 @@ tables manually. Functions from `stringr` and `lubridate` will also be useful.
 ::: callout-note
 ## And the final suspect is...
 
-*put the name of the person responsible for the murder here.*
+*Miranda Priestly*
 :::
